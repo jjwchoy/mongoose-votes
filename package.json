@@ -1,0 +1,27 @@
+{
+  "name": "mongoose-votes",
+  "description": "Voting plugin for mongoose",
+  "author": {
+    "name": "Jason Choy",
+    "email": "jjwchoy@gmail.com"
+  },
+  "version": "0.1.0",
+  "contributors": [
+    {
+      "name": "Jason Choy",
+      "email": "jjwchoy@gmail.com"
+    }
+  ],
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jjwchoy/mongoose-votes"
+  },
+  "keywords": [
+    "mongoose"
+  ],
+  "dependencies": {
+    "mongoose": "3.5.x"
+  },
+  "license": "MIT"
+}
