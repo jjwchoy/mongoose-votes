@@ -68,8 +68,8 @@ module.exports = exports = function(schema, options) {
     var upvoteMethodName = options.upvoteMethodName || 'upvote';
     var cancelUpvoteMethodName = options.cancelUpvoteMethodName || 'cancelUpvote';
 
-    // indexed defaults to true
-    var indexed = options.indexed === false ? false : true;
+    // indexed defaults to false
+    var indexed = !!options.indexed;
 
     var toAdd = {};
     toAdd[upvotesName] = {type: Number, default: 0};
@@ -138,9 +138,9 @@ module.exports = exports = function(schema, options) {
     }
 
     if (indexed) {
-        schema.path(upvotersName).index(true);
+        schema.index({'_id': 1, upvotersName: 1});
         if (!disableDownvotes) {
-            schema.path(downvotersName).index(true);
+            schema.index({'_id': 1, downvotersName: 1});
         }
     }
 };
