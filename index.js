@@ -169,9 +169,13 @@ module.exports = exports = function(schema, options) {
 
     var highestVotedFuncName = options.highestVotedFuncName || 'highestVoted';
     schema.statics[highestVotedFuncName] = function(match, projection, sort, callback) {
-        projection[tallyName] = {
-            $subtract: ['$' + upvotesName, '$' + downvotesName]
-        };
+        if (disableDownvotes) {
+            projection[tallyName] = '$' + upvotesName;
+        } else {
+            projection[tallyName] = {
+                $subtract: ['$' + upvotesName, '$' + downvotesName]
+            };
+        }
         sort = sort || {
             tallyName: -1
         };
