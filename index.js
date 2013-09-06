@@ -210,9 +210,9 @@ module.exports = exports = function(schema, options) {
     if (tallyName !== upvotesName) {
         schema.virtual(tallyName).get(function() {
             if (disableDownvotes) {
-                return this.upvotes;
+                return this[upvotesName] || 0;
             } else {
-                return this.upvotes - this.downvotes;
+                return (this[upvotesName] || 0) - (this[downvotesName] || 0);
             }
         });
     }
