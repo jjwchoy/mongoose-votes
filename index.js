@@ -8,7 +8,7 @@ function makeRecordVote(votesName, votersName, weight) {
 
         // only match if this voter hasn't already voted for this
         q[votersName] = {
-            $ne: voterId
+            $nin: [voterId]
         };
 
         // adds voterId to the voters array
@@ -35,7 +35,9 @@ function makeCancelVote(votesName, votersName, weight) {
         var q = {_id: objId};
 
         // only match if this voter has voted for this
-        q[votersName] = voterId;
+        q[votersName] = {
+            $in: [voterId]
+        };
 
         // removes voterId from the voters array
         var pull = {};
