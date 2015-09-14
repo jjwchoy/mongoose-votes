@@ -8,7 +8,7 @@ function makeRecordVote(votesName, votersName, weight) {
 
         // only match if this voter hasn't already voted for this
         q[votersName] = {
-            $ne: voterId
+            $nin: [voterId]
         };
 
         // adds voterId to the voters array
@@ -26,7 +26,7 @@ function makeRecordVote(votesName, votersName, weight) {
 
         this.update(q, u, callback);
     };
-};
+}
 
 function makeCancelVote(votesName, votersName, weight) {
     weight = weight || 1;
@@ -35,7 +35,9 @@ function makeCancelVote(votesName, votersName, weight) {
         var q = {_id: objId};
 
         // only match if this voter has voted for this
-        q[votersName] = voterId;
+        q[votersName] = {
+            $in: [voterId]
+        };
 
         // removes voterId from the voters array
         var pull = {};
@@ -52,7 +54,7 @@ function makeCancelVote(votesName, votersName, weight) {
 
         this.update(q, u, callback);
     };
-};
+}
 
 module.exports = exports = function(schema, options) {
     options = options || {};
@@ -75,9 +77,9 @@ module.exports = exports = function(schema, options) {
     toAdd[upvotesName] = {type: Number, default: 0};
     toAdd[upvotersName] = [voterIdType];
 
+    var downvotesName = options.downvotesName || 'downvotes';
+    var downvotersName = options.downvotersName || 'downvoters';
     if (!disableDownvotes) {
-        var downvotesName = options.downvotesName || 'downvotes';
-        var downvotersName = options.downvotersName || 'downvoters';
         toAdd[downvotesName] = {type: Number, default: 0};
         toAdd[downvotersName] = [voterIdType];
     }
@@ -146,7 +148,7 @@ module.exports = exports = function(schema, options) {
             q = {};
         }
         q[upvotersName] = voterId;
-        projection = {
+        var projection = {
             _id: 1
         };
         this.find(q, projection, callback);
@@ -160,7 +162,7 @@ module.exports = exports = function(schema, options) {
                 q = {};
             }
             q[downvotersName] = voterId;
-            projection = {
+            var projection = {
                 _id: 1
             };
             this.find(q, projection, callback);
